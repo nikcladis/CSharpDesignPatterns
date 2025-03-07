@@ -1,4 +1,4 @@
-namespace Adapter
+namespace ClassAdapter
 {
     public class CityFromExternalSystem
     {
@@ -26,7 +26,7 @@ namespace Adapter
             return new CityFromExternalSystem("New York", "Big Apple", 8_175_133);
         }
     }
-
+    
     public class City
     {
         public string FullName { get; private set; }
@@ -51,14 +51,12 @@ namespace Adapter
     /// <summary>
     /// Adapter
     /// </summary>
-    public class CityAdapter : ICityAdapter
+    public class CityAdapter : ExternalSystem, ICityAdapter
     {
-        public ExternalSystem ExternalSystem { get; private set; } = new();
-
-        public City GetCity()
+        public new City GetCity()
         {
             // Call into the external system
-            var cityFromExternalSystem = ExternalSystem.GetCity();
+            var cityFromExternalSystem = base.GetCity();
 
             // Adapt the CityFromExternalSystem to a City
             return new City($"{cityFromExternalSystem.Name} - ({cityFromExternalSystem.NickName})", cityFromExternalSystem.Inhabitants);
